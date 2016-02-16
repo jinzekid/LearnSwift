@@ -135,7 +135,7 @@ func append_one(a: [Int]) -> [Int] {
 var a = [1, 2, 3]
 a = append_one(a)    // A copy may be occur here.
 
-尽管a版本在被append_one之后���由于赋值没使用有，但是  a也许还是被拷贝了。应该使用inout参数来避免这样的问题。
+尽管a版本在被append_one之后���由于赋值没使用有，但是  a也许还是被拷贝了。应该使用inout参数来避免这样的问题。
 func append_one_in_place(inout a: [Int]) {
   a.append(1)
 }
@@ -144,10 +144,24 @@ var a = [1, 2, 3]
 append_one_in_place(&a)
 
 
+未检查操作
+Swift在执行普通计算的时候通过检查溢出排除了整型溢出bug。当知道没有内存安全问题这类高效的代码中不适合去检查这类问题。
+
+建议：当你确切的知道溢出不可能发生的时候使用未检测整型计算。
+
+在对性能有严格要求的代码中，如果你认为安全，可以省略对溢出的检查。
+
+a : [Int]
+b : [Int]
+c : [Int]
+
+// Precondition: for all a[i], b[i]: a[i] + b[i] does not overflow!
+for i in 0 ... n {
+  c[i] = a[i] &+ b[i]
+}
 
 
-
-
+泛型
 
 
 
