@@ -15,3 +15,81 @@ Swift在即使它是一个单独的文件或是一个单独的单元也能够对
 
 这个模式能够通过Xcode中的build setting ‘Whole Module Optimization’来启用。
 
+减少动态调度
+Swift在默认情况下就像OC那样是非常动态语言。与OC不同的是，Swift能够让程序员在必要时候有能力去移除或减少这种动态机制从而提升运行时的性能。
+以下是几个示例：
+
+动态调度
+默认情况下类使用动态调度方法和属性。因此下面的代码片段中，a.aProperty,a.doSomething,a.doSomethingElse方法都是通过动态调度来调用的。
+class A {
+  var aProperty: [Int]
+  func doSomething() { ... }
+  dynamic doSomethingElse() { ... }
+}
+
+class B : A {
+  override var aProperty {
+    get { ... }
+    set { ... }
+  }
+
+  override func doSomething() { ... }
+}
+
+func usingAnA(a: A) {
+  a.doSomething()
+  a.aProperty = ...
+}
+
+在Swift中，动态调度默认情况下是通过一个vtable（虚函数表）间接的调用。如果使用了dynamic关键字来声明，Swift会调用OC发送消息的方法去替代。
+这两种情况都要比直接的方法调用慢，因为这样就会阻止除间接调用本身之外的许多编译器的优化。在性能关键的代码中，动态行为会被严格的限制。
+
+建议：当你知道声明以后不会被重写（overridden）的时候，请使用'final'关键字。
+
+final关键字是声明类，方法或者属性上的一个限制，这样声明就不能被重写（overridden）。这就意味着编译器能够直接的调用方法而不是间接的调用。
+以下示例中，C.array1,D.array1会直接的读取，而D.array2则就间接的通过vtable来调用。
+final class C {
+  // No declarations in class 'C' can be overridden.
+  var array1: [Int]
+  func doSomething() { ... }
+}
+
+class D {
+  final var array1 [Int] // 'array1' cannot be overridden by a computed property.
+  var array2: [Int]      // 'array2' *can* be overridden by a computed property.
+}
+
+func usingC(c: C) {
+   c.array1[i] = ... // Can directly access C.array without going through dynamic dispatch.
+   c.doSomething() = ... // Can directly call C.doSomething without going through virtual dispatch.
+}
+
+func usingD(d: D) {
+   d.array1[i] = ... // Can directly access D.array1 without going through dynamic dispatch.
+   d.array2[i] = ... // Will access D.array2 through dynamic dispatch.
+}
+
+建议：当声明时不需要被外部文件访问，请使用关键字‘private’
+
+使用private关键字进行声明，限制了声明文件的可见性。
+这个能让编译器有能力甄别出所有其它潜在的覆盖声明。因此，由于以上的声明能让编译器自动地推断出fianl关键字，
+并且移除间接方法调用和属性访问。
+以下示例，e.doSomething()和f.myPrivateVar，如果在同一个文件类E,F中没有任何覆盖声明，这两个方法将被直接调用。
+private class E {
+  func doSomething() { ... }
+}
+
+class F {
+  private var myPrivateVar : Int
+}
+
+func usingE(e: E) {
+  e.doSomething() // There is no sub class in the file that declares this class.
+                  // The compiler can remove virtual calls to doSomething()
+                  // and directly call A's doSomething method.
+}
+
+func usingF(f: F) -> Int {
+  return f.myPrivateVar
+}
+
