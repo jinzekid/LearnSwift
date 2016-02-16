@@ -93,3 +93,23 @@ func usingF(f: F) -> Int {
   return f.myPrivateVar
 }
 
+高效使用容器类
+由Swift标准类库提供一个重要特性就是通用容器，Array和Dictionary。下面内容将解释如何高效的使用这些类型。
+
+建议：在Array中使用值类型
+在Swift中，类型能被分为两类：值类型（像结构体，枚举，元组）和引用类型（类）。一个关键的区别是在NSArray中不能包含值类型。
+因此，当使用值类型时，在Array中，优化器会移除大部分对NSArray的支持从降低其中额外的开销。
+此外，相比引用类型，如果值类型仅仅递归的包含引用类型，那么值类型仅仅需要引用计数器。
+如果使用了没有引用类型的值类型，在数组内就可以避免额外的retain，release的开销。
+// Don't use a class here.
+struct PhonebookEntry {
+  var name : String
+  var number : [Int]
+}
+
+var a : [PhonebookEntry]
+
+记住：在大值类型和使用引用类型之间要由权衡。在某些情况下，拷贝和移动大值类型过的消耗要大于移除brigding和retain/release的开销。
+
+
+
