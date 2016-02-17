@@ -1,0 +1,11 @@
+Swift数组设计（The Swift Array Design）
+
+目标：
+1.最重要的性能目标，要有和C数组一样的下标存取元素类型的性能。
+2.应该可以接受来自Cocoa的NSArray数组，作为Array<AnyObject>，又能够作为NSArray正确的传递回Cocoa中，并且没有任何的内存分配。
+3.数组（Array）应该能够被复用，就像栈(stacks),因此可以正确的添加和推出。和目标#1一样，这意味着std::vector这样的布局（layout）
+保留了一定内存容量能够存储实际的数组元素。
+
+为了达到目标1和目标2，我们使用静态元素类型：当数组元素是已知静态的类型而不是类时，代码和检查作为NSArray的包装会被消除。
+一个Swift的值类型数组通常使用起来是最有效的代表，就如同ContiguousArray。
+
