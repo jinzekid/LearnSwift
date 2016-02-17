@@ -238,6 +238,93 @@ func play_a_game(game : Playable ) {
 play_a_game(Game(10))
 
 
+swfit大值的开销
+在Swift中，值类型保存了一份独有拷贝。使用值类型有很多优点，比如确保值类型有独立的状态。
+当我们拷贝值类型时（相当于赋值，初始化和参数传递等），程序会重新拷贝一份。
+对于某些大的值类型拷贝，这种拷贝很耗时而且非常影响程序的性能。
+
+下面代码定义了一个使用值类型为节点的树结构。这个树节点包含了协议类型的其它节点。
+在计算机图形场景经常由使用不同的实体和形态变�化来表示值，就像下面的实例：
+protocol P {}
+struct Node : P {
+  var left, right : P?
+}
+
+struct Tree {
+  var node : P?
+  init() { ... }
+}
+
+
+当树进行拷贝时（参数传递，初始化或者赋值）整个树都需要被复制。这样的话，树就需要花费大量的开销用于malloc／free调用以及大量的引用计数操作。
+然而，我们不关心值是否被拷贝，只要值保留下来就可以。
+
+建议：对于大的值类型使用COW（copy-on-wirte）
+为了减少复制大的值类型的数据开销的办法时采用写时复制行为（COW）.最简单的实现写时复制就是使用已经存在的写时复制数据结构，必入数组。
+Swift的数组是值类型，但是数组的内容作为参数被传递时不是每次都被拷贝的，因为它具有写时复制特性。
+
+在我们的 Tree 的例子中我们通过将 tree 的内容包装成一个数组来减少复制的代价。
+这个简单的改变对我们 tree 数据结构的性能影响时巨大的，作为参数传递数组的代价从 O(n) 变为 O(1)。
+
+struct Tree : P {
+  var node : [P?]
+  init() {
+    node = [ thing ]
+  }
+}
+
+但是当使用数组的COW机制时有两个明显的不足处。第一个问题就是数组暴露了诸如append和count之类的方法，
+这对于在上下文中值的包装没有起到任何作用。
+这些方法使得引用类型的封装变得棘手。也许可以使用封装结构体来隐藏那些没有使用的API接口，优化器为移除这些开销。
+但是这样子不会解决第二个问题，就是数组内部you保证程序安全性和OC之间的交互性。
+Swift在保存数组数据的时候会检查其下标是否在数组边界内。这些运行时的检查会较低运行速度。
+
+一个替代的方案是实现一个专门的使用 COW 机制的数据结构代替采用数组作为值的封装。构建这样一个数据结构的示例如下所示：
+final class Ref<T> {
+  var val : T
+  init(_ v : T) {val = v}
+}
+
+struct Box<T> {
+    var ref : Ref<T>
+    init(_ x : T) { ref = Ref(x) }
+
+    var value: T {
+        get { return ref.val }
+        set {
+          if (!isUniquelyReferencedNonObjC(&ref)) {
+            ref = Ref(newValue)
+            return
+          }
+          ref.val = newValue
+        }
+    }
+}
+
+上面的Box类型可以替代上例中的数组。
+
+不安全代码
+Swift的类使用引用计数进行内存管理。swift的编译器会插入每次对象增长的引用计数代码。
+比如，考虑在使用类的实现时遍历链接问题。通过移动一个节点引用到下一个来遍历列表：elem ＝elem.next。
+每次我们移动引用，swift都会增加next对象的引用计数并减少上一对象的引用计数。
+当使用Swift类时候， 这样的引用计数代价很昂贵并且不可避免。
+
+final class Node {
+ var next: Node?
+ var data: Int
+ ...
+}
+
+建议：使用未托管的引用来避免引用计数的负荷
+
+在性能要求很高的代码中，你可以选择使用未托管的引用。Unmanaged<T>结构体让开发者能够使用特殊的引用而避免自动引用计数。
+var Ref : Unmanaged<Node> = Unmanaged.passUnretained(Head)
+
+while let Next = Ref.takeUnretainedValue().next {
+  ...
+  Ref = Unmanaged.passUnretained(Next)
+}
+
 
 
 
