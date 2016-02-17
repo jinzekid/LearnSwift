@@ -9,3 +9,24 @@ Swift数组de设计
 为了达到目标1和目标2，我们使用静态元素类型：当数组元素是已知静态的类型而不是类时，代码和检查作为NSArray的包装会被消除。
 一个Swift的值类型数组通常使用起来是最有效的代表，就如同ContiguousArray。
 
+组件
+Swift提供了三种泛型数组，所有的都是线性（一维度）增长。在文档中，声明ArrayType都作用于这三种组件。
+☀ ︎ContiguousArray<Element>是其中最快和最简单的－当你想要C数组的性能时就可以使用它。ContiguousArray里面的元素在内存中通常都是连续的。
+  
+  https://github.com/apple/swift/blob/master/docs/ContiguousArray.png
+
+☀ Array<Element>和ContiguousArray<Element>类似，仅当元素是类类型的时候，能够优化效率从Cocoa之间的转化，
+  Array<Element>能够被当成NSArray反推回去（可能会不连续）而不是Swift的ContiguousArray。
+  Array<Element>也支持在相关类类型之间的相互转型。当元素不是类类型时，其性能和ContiguousArray<Element>一样。
+  
+  https://github.com/apple/swift/blob/master/docs/ArrayImplementation.png
+  
+☀ ArraySlice<Element>是某个Array<Element>或者是ContiguousArray<Element>的子集;就相当于使用swift数组a切割下标，比如a[7...21]。
+  一次切割通常是连续的存储并且带有C数组的性能。一个ArrayType是线性切割除非Array<Element>被发推为NSArray类型。
+  ArraySlice常被用于短暂的计算，不适合较长的存储。因为它引用了某个共享反推缓存（backing buffer）的子集，
+  ArraySlice可人为的在其之外延长其元素的生命周期。
+  
+  https://github.com/apple/swift/blob/master/docs/Slice.png
+  
+  
+
