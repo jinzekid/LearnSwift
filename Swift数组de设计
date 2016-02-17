@@ -1,4 +1,4 @@
-Swift数组设计（The Swift Array Design）
+Swift数组de设计
 
 目标：
 1.最重要的性能目标，要有和C数组一样的下标存取元素类型的性能。
