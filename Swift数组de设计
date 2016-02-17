@@ -37,4 +37,9 @@ Swift提供了三种泛型数组，所有的都是线性（一维度）增长。
   print(b[1]) //prints "2"
 
 
+所有类型的规则和语法
+ 1fds  ���1.🇳每一个类类型或已存在的@objc（比如：AnyObject）是被桥接（bridged）到Objective-C并且桥接回Swift具有同样的特性。
+
+
+
 
