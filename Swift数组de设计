@@ -28,5 +28,13 @@ Swift提供了三种泛型数组，所有的都是线性（一维度）增长。
   
   https://github.com/apple/swift/blob/master/docs/Slice.png
   
-  
+  (不是很明白)
+  突变的语法（Semantics）
+  ArrayTypes有完整的语法(semantics)通过COW(copy-on-write):
+  var a = [1,2,3]
+  let b = a
+  a[1] = 42
+  print(b[1]) //prints "2"
+
+
 
