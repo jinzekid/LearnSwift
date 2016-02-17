@@ -162,6 +162,101 @@ for i in 0 ... n {
 
 
 泛型
+Swift通过泛型的使用，提供非常强大的抽象机制。Swift编译器发出能对任何T执行的MySwiftFunc<T>方法。生成的代码需要一个方法列表的指针和一个包含T的盒子作为参数。
+在MySwiftFun<Int>和MySwiftFun<String>之间任何不同的行为通过传递不同的函数指针和由盒子提供的抽象大小来说明。
+下面是泛型实例：
+class MySwiftFunc<T> { ... }
+
+MySwiftFunc<Int> X    // Will emit code that works with Int...
+MySwiftFunc<String> Y // ... as well as String.
+
+当优化启用时，Swift编译器寻找每一段这样的代码，并且尝试确认在调用时候的具体类型（例如：非泛型类型）。如果泛型的定义对于优化器是可见，并且知道具体类型，
+Swift编译器会生成一个特殊类型的特殊泛型方法。这个处理叫做特殊化处理，这样的处理能够避免关联泛型的消耗。
+下面是更多的实例：
+class MyStack<T> {
+  func push(element: T) { ... }
+  func pop() -> T { ... }
+}
+
+func myAlgorithm(a: [T], length: Int) { ... }
+
+// The compiler can specialize code of MyStack[Int]
+var stackOfInts: MyStack[Int]
+// Use stack of ints.
+for i in ... {
+  stack.push(...)
+  stack.pop(...)
+}
+
+var arrayOfInts: [Int]
+// The compiler can emit a specialized version of 'myAlgorithm' targeted for
+// [Int]' types.
+myAlgorithm(arrayOfInts, arrayOfInts.length)
+
+建议：把泛型的声明放在使用它的文件中
+优化器仅能特殊化处理那些当前可见模块中的泛型声明。只有在同一个文件中声明和调用泛型的时候才执行。
+注意，标准库是一个特殊的例外。定义在标准库中所有可见模块都能特殊化处理。
+
+建议：允许编译器执行泛型特殊化
+只有当调用位置和被调用函数在同一个编译单元中的编译器才会对泛型代码特殊化处理。
+我们能够使用一个技巧来让编译器进行被调函数的优化，就是在被调函数所在的同一编译单元中进行类型检查。
+执行类型检查后会重新调度这个调用的泛型函数－但是这个时候它就带有类型信息。
+在接下来的代码中，我们在方法play_a_game方法中加入了类型检查，并且使运行速度提高了几百倍。
+//Framework.swift:
+
+protocol Pingable { func ping() -> Self }
+protocol Playable { func play() }
+
+extension Int : Pingable {
+  func ping() -> Int { return self + 1 }
+}
+
+class Game<T : Pingable> : Playable {
+  var t : T
+
+  init (_ v : T) {t = v}
+
+  func play() {
+    for _ in 0...100_000_000 { t = t.ping() }
+  }
+}
+
+func play_a_game(game : Playable ) {
+  // This check allows the optimizer to specialize the
+  // generic call 'play'
+  if let z = game as? Game<Int> {
+    z.play()
+  } else {
+    game.play()
+  }
+}
+
+/// -------------- >8
+
+// Application.swift:
+
+play_a_game(Game(10))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
