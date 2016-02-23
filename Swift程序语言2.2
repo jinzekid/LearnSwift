@@ -115,6 +115,78 @@ let convertedNumber = Int(possibleNumber)
 使用！来读取可选项值，如果用！来读取不存在的可选项值会触发运行错误。一定要保证在使用！来强制解析非nil的值。
 
 
+选项绑定（optional binding）
+if let firstNumber = Int("4"), secondNumber = Int("42") where firstNumber < secondNumber {
+    print("\(firstNumber) < \(secondNumber)")
+}
+
+
+隐式解析选项（Implicitly Unwrapped Optionals）
+有些选项值一直都是有值的，对你来说这些值都是安全的，所以在使用的时候没有必要时刻去检查。
+像这样子的选项值被称为隐式选项值。
+写法：String!（不是String?）
+
+let possibleString: String? = "An optional string."
+let forcedString: String = possibleString! // requires an exclamation mark
+ 
+let assumedString: String! = "An implicitly unwrapped optional string."
+let implicitString: String = assumedString // no need for an exclamation mark
+
+
+注意：
+如果你的隐式解析选项是nil的话，当你要试图访问它的值的时候，会触发运行时的错误。
+这个结果和你使用！来解析一个不包含可选项值的时候结果一样。
+
+注意：
+当这个变量有可能变为nil的时候，请不要使用隐式解析选项。如果你需要检查一个变量在生命周期内是否为nil，一般情况下会使用一个正常的可选项（optional）类型。
+
+
+异常处理
+示例1:
+func canThrowAnError() throws {
+    // this function may or may not throw an error
+}
+
+do {
+    try canThrowAnError()
+    // no error was thrown
+} catch {
+    // an error was thrown
+}
+
+示例2:
+func makeASandwich() throws {
+    // ...
+}
+ 
+do {
+    try makeASandwich()
+    eatASandwich()
+} catch Error.OutOfCleanDishes {
+    washDishes()
+} catch Error.MissingIngredients(let ingredients) {
+    buyGroceries(ingredients)
+}
+
+
+断言（Assertions）
+可以调用Swift标准库中的全局方法断言：assert(_:_file:line:)
+
+let age = -3
+assert(age >= 0, "A person's age cannot be less than zero")
+
+注意：
+当你的代码需要优化的时候，断言会失效！比如你在Xcode中使用release配置去编译程序的时候。
+以下有几种情况可以使用断言：
+1.下标标示法的时候，用来检查下标值是否过高或者过低。
+2.方法中传的值是否正确
+3.当前可选项值是nil，但是需要个非nil的来执行之后的代码
+
+
+
+
+
+
 
 
 
