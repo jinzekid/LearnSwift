@@ -98,6 +98,27 @@ optionalInt = nil
 
 var surveyAnswer: String? //变量自动赋值为nil
 
+optionals能够用于有些情况，比如从String类型转换到Int类型,但是不是每个String都能够被转换成整型。
+比如，“123”可以装换成123，但是"hello"就不能够明显的被装换成整型。
+
+let possibleNumber = "123"
+let convertedNumber = Int(possibleNumber)
+这个例子返回的是一个可选项(optional)整型，而不是一个整型。
+可选项（optional）整型被写成Int?,而不是Int,?表明这个值有可以是optional，意味着它包含了某个整型值，或者是没有值。
+
+注意：
+在Swift中的nil和Objective-C中的nil是不一样的。在Objective-C中，nil是一个指向不存在的对象的指针。
+在Swift中，nil不是一个指针－－它是代表某个没有值的类型。任何可选项类型都可以被赋值为nil，不仅仅是对象类型。
+
+
+强制解析(Forced Unwrapping)
+使用！来读取可选项值，如果用！来读取不存在的可选项值会触发运行错误。一定要保证在使用！来强制解析非nil的值。
+
+
+
+
+
+
 
 
 
