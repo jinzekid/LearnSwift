@@ -1,1 +1,116 @@
 基础：
+变量和常量
+
+
+声明变量和常量：
+var myVariable = 42 //定义变量
+myVariable = 50 // 改变myVariable值
+let myConstant = 42 //定义常量
+
+也可以使用在一行内用逗号分隔定义：
+var x = 0.0, y = 0.0, z = 0.0
+
+
+类型注释：
+let explicitDouble: Double = 70 // 显示定义
+var messageStr: String //定一个类型为String的变量
+var red, green, blue: Double //同时定义多个变量为同一类型Double型
+
+
+打印常量和变量：
+例如：
+print("The current value of friendlyWelcome is \(friendlyWelcome)")
+
+
+注释：
+// this is a comment
+/* this is also a comment.
+but written over multiple lines*/
+
+
+分号：
+对于Swift来说分号是可以省略的。
+但是对于在同一行的多个语句来说，分号是必须的。
+
+
+整型类型
+整型(Int)，无符号整型(UInt)，浮点类型
+
+
+类型安全和类型引用
+Swift是类型安全语言。
+如果你的代码是String类型，那么你不能赋值一个Int值。
+
+
+数字形式
+一个整型数字能够写成不同的形式：
+.十进制
+.二进制
+.八进制
+.十六进制
+
+
+let paddedDouble = 000123.456
+let oneMillion = 1_000_000
+let justOverOneMillion = 1_000_000.000_000_1
+
+
+整型和浮点类型转换
+let integerPi = Int(pi)
+let pi = Double(three) + pointOneFourOneFiveNine
+
+
+类型别称（Type Aliases）
+使用关键字typealias来定义一个已存在类型的别名。
+typealias AudioSample = UInt16
+var maxAmplitudeFound = AudioSample.min
+
+
+布尓值（boolean）
+let orangesAreOrange = true
+let turnipsAreDelicious = false
+
+
+元组（Tuples）
+元组就是其中包含多个值。
+比如：(404, "Not Found")就是一个元组，用来描述HTTP状态码。
+let http404Error = (404, "Not Found")
+包含了一个Int和String类型值。
+
+let (statusCode, statusMessage) = http404Error
+print("The status code is \(statusCode)")
+// prints "The status code is 404"
+print("The status message is \(statusMessage)")
+// prints "The status message is Not Found 
+
+如果你仅需要元组中的某个值，可以这样定义：
+let (justTheStatusCode, _) = http404Error
+print("The status code is \(justTheStatusCode)")
+// prints "The status code is 404
+
+初始化元组示例：
+let http200Status = (statusCode: 200, description: "OK")
+
+
+可选项（Optionals）
+let optionalInt: Int? = 9 //定义可选变量为特殊的值:nil
+optionalInt = nil
+
+var surveyAnswer: String? //变量自动赋值为nil
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
