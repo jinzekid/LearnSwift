@@ -1,1 +1,180 @@
+字符串是一个由一串字符组成的，就像"hello, world" 或者是 “albatross”.
+
+注意：
+Swift中的String类型被桥接到基础的NSString类中。当你创建任何String值需要转换成NSString类型,NSString所有的API都可以调用。
+
+
+字符串
+定义方法：
+let someString = "Some string literal value"
+
+初始化空字符串
+var emptyString = "" // empty string literal
+var anotherEmptyString = String() // initializer syntax
+
+if emptyString.isEmpty {
+  print("Nothing to see here")
+}
+
+
+字符串的可修改性
+var variableString = "Horse"
+variableString += " and carriage"
+
+
+字符串是值类型
+对于String来说，无论是方法还是功能，都会重新复制一份新的String值。
+
+
+使用字符
+你可以读取String的每个字符，例如：
+for character in "Dog".characters {
+  print(character)
+}
+
+定义Character：
+let exclamationMark: Character = "!"
+
+let catCharacters: [Character] = ["C", "a", "t", "!", "🐱"]
+let catString = String(catCharacters)
+print(catString)
+// prints "Cat!🐱
+
+
+连接字符串和字符
+let string1 = "hello"
+let string2 = " there"
+var welcome = string1 + string2
+// welcome now equals "hello there
+
+var instruction = "look over"
+instruction += String2
+
+let exclamationMark: Character = "!"
+welcome.append(exclamationMark)
+
+注意：
+你不能在Character值上添加Character或者是String,因为Character类型就是只有一个字符。
+
+
+字符串插入
+let multiplier = 3
+let message = "\(multiplier) times 2.5 is \(Double(multiplier) * 2.5)"
+// message is "3 times 2.5 is 7.5"
+
+
+Unicode
+
+
+在字符串中的特殊字符
+\0,\\,\t,\n,\r,\",\'
+\u{n} // n是一个16进制的数
+
+let wiseWords = "\"Imagination is more important than knowledge\" - Einstein"
+// "Imagination is more important than knowledge" - Einstein
+let dollarSign = "\u{24}"        // $,  Unicode scalar U+0024
+let blackHeart = "\u{2665}"      // ♥,  Unicode scalar U+2665
+let sparklingHeart = "\u{1F496}" // 💖, Unicode scalar U+1F496
+
+
+字符计数
+let unusualMenagerie = "Koala 🐨, Snail 🐌, Penguin 🐧, Dromedary 🐪"
+print("unusualMenagerie has \(unusualMenagerie.characters.count) characters")
+// prints "unusualMenagerie has 40 characters
+
+
+读取和修改字符串
+字符串索引
+每一个字符串都有相关的索引类型，String.Index,代表在String中的每一个Character的位置。
+let greeting = "Guten Tag!"
+greeting[greeting.startIndex]
+// G
+greeting[greeting.endIndex.predecessor()]
+// !
+greeting[greeting.startIndex.successor()]
+// u
+let index = greeting.startIndex.advancedBy(7)
+greeting[index]
+// a
+
+greeting[greeting.endIndex] // error
+greeting.endIndex.successor() // error
+
+for index in greeting.characters.indices {
+    print("\(greeting[index]) ", terminator: "")
+}
+// prints "G u t e n   T a g ! "
+
+
+插入和移除
+var welcome = "hello"
+welcome.insert("!", atIndex: welcome.endIndex)
+// welcome now equals "hello!"
+
+welcome.insertContentsOf(" there".characters, at: welcome.endIndex.predecessor())
+// welcome now equals "hello there!
+
+welcome.removeAtIndex(welcome.endIndex.predecessor())
+// welcome now equals "hello there
+
+let range = welcome.endIndex.advancedBy(-6)..<welcome.endIndex
+welcome.removeRange(range)
+// welcome now equals "hello"
+
+
+字符串比较
+Swift中提供了三种比较值方法：字符串和字符的比较，前缀比较和后缀比较。
+
+字符串和字符比较
+let quotation = "We're a lot alike, you and I."
+let sameQuotation = "We're a lot alike, you and I."
+if quotation == sameQuotation {
+    print("These two strings are considered equal")
+}
+// prints "These two strings are considered equal"
+
+Swift中的字符串和字符比较忽略本地敏感。
+
+
+前缀和后缀比较
+检查字符串是否以特殊字符开头或者是结尾，使用字符串hasPrefix(_:)和hasSuffix(_:)方法，以字符串为参数，boolean为返回类型。
+
+
+字符串的Unicode表示法
+let dogString = "Dog‼🐶"
+
+ // UTF8
+for codeUnit in dogString.utf8 {
+    print("\(codeUnit) ", terminator: "")
+}
+print("")
+// 68 111 103 226 128 188 240 159 144 182
+
+// UTF16
+for codeUnit in dogString.utf16 {
+    print("\(codeUnit) ", terminator: "")
+}
+print("")
+// 68 111 103 8252 55357 56374
+
+// Unicode Scalar表示
+for scalar in dogString.unicodeScalars {
+    print("\(scalar.value) ", terminator: "")
+}
+print("")
+// 68 111 103 8252 128054
+
+for scalar in dogString.unicodeScalars {
+    print("\(scalar) ")
+}
+// D
+// o
+// g
+// ‼
+// 🐶
+
+
+
+
+
 
