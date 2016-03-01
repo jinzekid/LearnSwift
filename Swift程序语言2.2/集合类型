@@ -1,1 +1,8 @@
 集合类型
+
+Swift提供了三种的主要集合类型，Array，Set, Dictiionary。
+Array是有序集合。
+Set是无序并且其中的值具有唯一性。
+Dictionary也是无序并且是键值对应。
+
+
