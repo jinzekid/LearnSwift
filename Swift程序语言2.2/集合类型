@@ -65,6 +65,23 @@ for (index, value) in shoppList.enumerate() {
 }
 
 
+Sets
+在一个set集合中是区分其中的值，并且是无序的。
+当对于一个无序的集合是，可以使用set来代替数组，同时你需要保证其中的值是唯一的。
+
+默认所有的Swift基本类型（像是String, Int, Double和Bool）都能够hash
+
+
+var letters = Set<Character>()
+print("letters is of type Set<Character> with \(letters.count) items.")
+// prints "letters is of type Set<Character> with 0 items.
+
+letters.insert("a")
+// letters now contains 1 value of type Character
+letters = []
+// letters is now an empty set, but is still of type Set<Character>
+
+
 
 
 
