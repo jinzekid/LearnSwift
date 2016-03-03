@@ -1,0 +1,93 @@
+集合类型
+
+Swift提供了三种的主要集合类型，Array，Set, Dictiionary。
+Array是有序集合。
+Set是无序并且其中的值具有唯一性。
+Dictionary也是无序并且是键值对应。
+
+
+可变的集合
+注意：
+当集合不需要改变的时候就需要声明成不可变集合。
+
+
+数组中存储着同一个类型的有序序列，并且相同的值可以出现在不同的位置。
+数组的定义形式：
+Array<Element>
+[Element]
+
+示例：
+var someInts = [Int]()
+
+创建具有默认值的数组
+var threeDoubles = [Double](count: 3, repeatedValue: 0.0)
+
+var anotherThreeDoubles = [Double](count: 3, repeatedValue: 2.5)
+// anotherThreeDoubles is of type [Double], and equals [2.5, 2.5, 2.5]
+ 
+var sixDoubles = threeDoubles + anotherThreeDoubles
+// sixDoubles is inferred as [Double], and equals [0.0, 0.0, 0.0, 2.5, 2.5, 2.5]
+
+var shoppingList: [String] = ["Eggs", "Milk"]
+// shoppingList has been initialized with two initial items
+
+
+shoppingList.isEmpty
+shoppingList.append("Flour")
+
+shoppingList += ["Baking Powder"]
+// shoppingList now contains 4 items
+shoppingList += ["Chocolate Spread", "Cheese", "Butter"]
+// shoppingList now contains 7 items
+
+取值：
+var firstItem = shoppList[0]
+
+使用下标语法(subscript syntax)
+shoppingList[4...6] = ["Bananas", "Apples"]
+// shoppingList now contains 6 items
+
+shoppingList.insert("Maple Syrup", atIndex: 0)
+// shoppingList now contains 7 items
+// "Maple Syrup" is now the first item in the list
+
+删除数组中的元素
+removeAtIndex(_:)
+
+遍历数组：
+for item in shoppingList {
+  print(item)
+}
+
+如果需要下标，可以使用enumerate()方法
+for (index, value) in shoppList.enumerate() {
+  print("Item \(index + 1): \(value)")
+}
+
+
+Sets
+在一个set集合中是区分其中的值，并且是无序的。
+当对于一个无序的集合是，可以使用set来代替数组，同时你需要保证其中的值是唯一的。
+
+默认所有的Swift基本类型（像是String, Int, Double和Bool）都能够hash
+
+
+var letters = Set<Character>()
+print("letters is of type Set<Character> with \(letters.count) items.")
+// prints "letters is of type Set<Character> with 0 items.
+
+letters.insert("a")
+// letters now contains 1 value of type Character
+letters = []
+// letters is now an empty set, but is still of type Set<Character>
+
+
+
+
+
+
+
+
+
+
+
