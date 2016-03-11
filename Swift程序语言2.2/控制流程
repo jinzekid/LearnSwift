@@ -1,0 +1,135 @@
+控制流程
+控制语句包括for,while
+if, guard, switch关键字
+break，continue关键字
+
+Swift中添加了for-in能够更容易的迭代数组，字典，集合包括其他的一些顺序组合。
+
+
+For Loops
+For-In
+for index in 1...5 {
+  print("\(index) times 5 is \(index * 5)")
+}
+
+let base = 3
+let power = 10
+var answer = 1
+for _ in 1...power {
+  answer *= base
+}
+print("\(base) to the power of \(power) is \(answer)")
+
+let names = ["Anna", "Alex", "Brian", "Jack"]
+for name in names {
+  print("Hello, \(name)")
+}
+
+let numberOfLegs = ["spider": 8, "ant": 6, "cat": 4];
+for (animalName, legCount) in numberOfLegs {
+  print("\(animalName)s have (legCount) legs")
+}
+
+for var index = 0; index < 3; ++index {
+  print("index is \(index)")
+}
+
+while condition {
+  statements
+}
+
+let finalSquare = 25
+var board = [Int](count: finalSquare + 1, repeatedValue: 0)
+
+
+var square = 0
+var diceRoll = 0
+while square < finalSquare {
+    // roll the dice
+    if ++diceRoll == 7 { diceRoll = 1 }
+    // move by the rolled amount
+    square += diceRoll
+    if square < board.count {
+        // if we're still on the board, move up or down for a snake or a ladder
+        square += board[square]
+    }
+}
+print("Game over!")
+
+
+If语句
+var temperatureInFahrenheit = 30
+if temperatureInFahrenheit <= 32 {
+  print("It's very cold, Consider wearing a scarf.")
+}
+
+
+Switch语句
+在Switch语句中必须要有一个可以执行的语句。
+
+switch some value to consider {
+case value 1:
+    respond to value 1
+case value 2,
+value 3:
+    respond to value 2 or 3
+default:
+    otherwise, do something else
+}
+
+
+let someCharacter: Character = "e"
+switch someCharacter {
+case "a", "e", "i", "o", "u":
+    print("\(someCharacter) is a vowel")
+case "b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
+"n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z":
+    print("\(someCharacter) is a consonant")
+default:
+    print("\(someCharacter) is not a vowel or a consonant")
+}
+// prints "e is a vowel"
+
+
+let anotherCharacter: Character = "a"
+switch anotherCharacter {
+case "a":
+case "A":
+    print("The letter A")
+default:
+    print("Not the letter A")
+}
+// this will report a compile-time error" 
+
+
+Tuples(元组)
+let somePoint = (1, 1)
+switch somePoint {
+case (0, 0):
+    print("(0, 0) is at the origin")
+case (_, 0):
+    print("(\(somePoint.0), 0) is on the x-axis")
+case (0, _):
+    print("(0, \(somePoint.1)) is on the y-axis")
+case (-2...2, -2...2):
+    print("(\(somePoint.0), \(somePoint.1)) is inside the box")
+default:
+    print("(\(somePoint.0), \(somePoint.1)) is outside of the box")
+}
+// prints "(1, 1) is inside the box"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
