@@ -1,0 +1,101 @@
+定义和调用方法
+func sayHello(personName: String) -> String {
+  let greeting = "Hello, " + personName + "!"
+  return greeting
+}
+
+调用：
+print(sayHello("Anna"))
+print(sayHello("Brain"))
+
+
+方法参数和返回值
+
+没有参数的方法
+func sayHelloWorld() -> String {
+  return "Hello, world"
+}
+print(sayHelloworld())
+
+
+带多个参数的方法
+func sayHello(personName: String, alreadyGreeted: Bool) -> String {
+  if alreadyGreeted {
+    return sayHelloAgain(personName)
+  }
+  else {
+    return sayHello(personName)
+  }
+}
+print(sayHello("Tim", alreadyGreeted:true))
+
+func sayGoodbye(personName: String) {
+  print("Goodbye, \(personName)")
+}
+sayGoodbye("Dave")
+
+注意：
+严格意义上来说，sayGoodbye方法同样返回一个值，这是一个特殊的void类型，是一个简单空的元组。
+事实上元组没有任何元素，所以被写成().
+
+
+返回多个值的方法
+func minMax(array: [Int]) -> (min: Int, max: Int) {
+    var currentMin = array[0]
+    var currentMax = array[0]
+    
+    for value in array[1..<array.count] {
+        if value < currentMin {
+            currentMin = value
+        }
+        else if (value > currentMax) {
+            currentMax = value
+        }
+    }
+    
+    return (currentMin , currentMax)
+}
+
+let a = [2,3,4,5,6]
+let result = minMax(a) //(2,6)
+result.max // 6
+
+方法参数名称
+
+特殊的参数名称
+func sayHello(to person: String, and anotherPerson: String) -> String {
+    return "Hello \(person) and \(anotherPerson)!"
+}
+print(sayHello(to: "Bill", and: "Ted"))
+
+如果不想用额外的参数名称，可以使用_来显示的代替这个参数名称
+
+默认参数值
+func someFunction(parameterWithDefault: Int = 12) {
+  
+}
+someFunction(6)
+someFunction()
+
+
+Variadic Parameters(可变参数)
+func arithmeticMean(numbers: Double...) -> Double {
+    var total: Double = 0
+    for number in numbers {
+        total += number
+    }
+    return total / Double(numbers.count)
+}
+arithmeticMean(1,2,3,4,5)
+
+注意：一个方法最多只能有一个可变参数
+
+
+In-Out参数
+
+
+
+
+
+
+
