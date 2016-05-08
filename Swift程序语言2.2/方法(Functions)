@@ -92,6 +92,42 @@ arithmeticMean(1,2,3,4,5)
 
 
 In-Out参数
+如果你想修改方法参数的值，并且想保持这个状态，那就就需要给参数定义in-out。
+你不能传一个常量或是不可变的值作为参数，因为那是不能修改的，你需要使用&在变量名前。
+
+示例：
+func swapToInts(inout a: Int, inout _ b: Int) {
+  let temporaryA = a
+  a = b
+  b = temporaryA
+}
+
+var someInt = 3
+var anotherInt = 107
+swapToInt(&someInt, & anotherInt)
+
+print("someInt is now \(someInt), and another is now \(anotherInt)")
+
+
+(Int, Int) -> Int:一个方法有两个Int类型的参数，并且返回一个Int值。
+
+
+使用方法类型：
+示例：
+var mathFunction:(Int, Int) -> Int = addTwoInts
+print("Result: \(mathFunction(2, 3))") // reuslt: 5
+
+let anotherMathFunction = addTwoInts
+// anotherMathFunction is inferred to be of type (Int, Int) -> Int
+
+方法类型作为参数类型：
+使用类似(Int, Int) -> Int作为参数
+示例：
+func printMathResult(mathFunction:(Int, Int) -> Int, _ a: Int, _ b: Int) {
+  print("Result: \(mathFunction(a, b))")
+}
+
+printMathResult(addTwoInts, 3, 5) // result: 8
 
 
 
