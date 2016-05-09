@@ -3,3 +3,16 @@ protocol SomeProtocol {
   // protocol defintion goes here
 }
 
+struct SomeStructure: FirstProtocol, AnotherProtocol {
+  // structure defintion goes here
+}
+
+class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
+  // class definition goes here
+}
+
+protocol SomeProtocol {
+  var mustBeSettable: Int { get set }
+  var doesNotNeddToBeSettable: Int { get }
+}
+
