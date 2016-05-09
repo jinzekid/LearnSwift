@@ -1,0 +1,5 @@
+协议语法：
+protocol SomeProtocol {
+  // protocol defintion goes here
+}
+
