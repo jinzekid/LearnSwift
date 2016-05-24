@@ -1,0 +1,103 @@
+泛型能够让你编写更已扩展，可服用的方法和类型。这样就可以避免一些重复的代码。
+
+示例：
+func swapTwoStrings(inout a: String, inout b: String) {
+  let temporaryA = a
+  a = b
+  b = temporaryA
+}
+
+func swapTwoStrings(inout a: Double, inout b: Double) {
+  let temporaryA = a
+  a = b
+  b = temporaryA
+}
+
+这两个方法内部一样，唯一的区别就是传入的参数不同。
+这个时候就可以用到泛型，让方法能够接收任何两个类型。
+
+泛型方法：
+func swapTwoValues<T>(inout a: T, inout b: T) {
+  let temporaryA = a
+  a = b
+  b = temporayA
+}
+
+func swapTwoStrings(inout a: Double, inout b: Double)
+func swapTwoValues<T>(inout a: T, inout b: T)
+
+
+var someInt = 3
+var anotherInt = 107
+swapToValues(&someInt, &anotherInt)
+
+var someString = "hello"
+var anotherString = "world"
+swapTwoValues(&someString, & anotherString)
+
+
+struct IntStack {
+  var items = [Int]()
+   mutating func push(item: Int) {
+    items.append(item)
+  }
+  mutating func pop() -> Int {
+    return items.removeLast()
+  }
+}
+
+
+struct Stack<Element> {
+    var items = [Element]()
+    mutating func push(item: Element) {
+        items.append(item)
+    }
+    mutating func pop() -> Element {
+        return items.removeLast()
+    }
+}
+
+var stackOfStrings = Stack<String>()
+stackOfStrings.push("uno")
+stackOfStrings.push("dos")
+stackOfStrings.push("tres")
+stackOfStrings.push("cuatro")
+// the stack now contains 4 strings
+
+let fromTheTop = stackOfStrings.pop()
+// fromTheTop is equal to "cuatro", and the stack now contains 3 strings
+
+if let topItem = stackOfStrings.topItem {
+  print("The top item on the stack is \(topItem).")
+}
+
+
+func someFunction<T: SomeClass, U: SomeProtocol>(SomeT: T, someU: U) {
+  // function body goes here
+}
+
+实例：
+func findIndex<T>(array:[T], _ valueToFind: T) -> Int? {
+  for (index, value) in array.enumerate() {
+    if value == valueToFind {
+      return index
+    }
+  }
+  return nil
+}
+
+Swift标准库定义了一个Equatable的协议，所有的swift标准库类型都支持Equatable协议。
+
+func findIndex<T: Equatable>(array: [T], _ valueToFind: T) -> Int? {
+  for (index, value) in array.enumerate() {
+    if value == valueToFind {
+      return index
+    }
+  }
+  return nil
+}
+
+
+
+
+
