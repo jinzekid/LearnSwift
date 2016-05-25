@@ -98,6 +98,42 @@ func findIndex<T: Equatable>(array: [T], _ valueToFind: T) -> Int? {
 }
 
 
+Associated类型
+Associated类型给类一个占位符名字，被用于协议的一部分，实际上被使用的类型用于关联类型直到协议被实现才能使用。
+Associated类型的关键字是associatedtype.
 
+protocol Container {
+  associatedtype ItemType
+  mutating func append(item: ItemType)
+  var count: Ing { get }
+  subscript(i: Int) -> ItemType { get }
+}
+
+// 原文引用
+To achieve this, the Container protocol declares an associated type called ItemType, written as associatedtype ItemType. 
+The protocol does not define what ItemType is—that information is left for any conforming type to provide. 
+
+
+struct IntStack: Container {
+    // original IntStack implementation
+    var items = [Int]()
+    mutating func push(item: Int) {
+        items.append(item)
+    }
+    mutating func pop() -> Int {
+        return items.removeLast()
+    }
+    // conformance to the Container protocol
+    typealias ItemType = Int
+    mutating func append(item: Int) {
+        self.push(item)
+    }
+    var count: Int {
+        return items.count
+    }
+    subscript(i: Int) -> Int {
+        return items[i]
+    }
+}
 
 
