@@ -1,1 +1,38 @@
+Run loops是线程中最基本，基础的组成之一。
+Run loops是一个循环处理事件，包括你调度你的工作和处理点击事件。
+Run loop的目的是让你的线程当有工作的时候处于繁忙；当没有工作的时候让线程处于休眠。
+
+Run loop的处理不是完全的自动的，你仍然需要设计的线程代码让run loop在合适的时机开始并且响应传入的响应事件。
+在cocoa和core foundation中提供了run loop对象帮助你配置和处理你的线程run loop。
+你的线程不需要显示的去创建这些对象。
+每个线程，包括应用的主线程都有一个run loop对象。
+只有第二个线程才需要显示的去运行它们的run loop。
+
+Run loop就像它的名字一样，它是一个循环的线程进入并用来响应于输入事件执行的事件处理程序。
+你的代码提供了用于实现运行循环的控制语句，换句话说，你的代码通过提供while或者for循环来驱动run loop。在你的loop中，你使用run loop对象去实现
+收到事件和调用处理方法的事件处理代码。
+
+一个run loop接收来自两种类型的事件，
+输入源(Input sources)是投递异步的事件，通常消息来自一个线程或者是另一个应用。在接收到消息并调用程序指定方法时，线程中对应的NSRunLoop对象会通过执行runUntilDate:方法来退出。
+计时器源(Timer sources)是投递timer事件（Schedule或者Repeat）中的同步消息。在处理消息时，并不会退出Run Loop。
+两种类型的源当事件到达时，使用一种application-specific处理者程序来处理事件。
+
+Run Loop还有一个观察者Observer的概念，可以往Run Loop中加入自己的观察者以便监控Run Loop的运行过程。
+
+Run Loop Modes
+Run Loop Mode可以理解为一个集合中包括所有要监视的事件源和要通知的Run Loop中注册的观察者。
+每一次运行自己的Run Loop时，都需要显示或者隐示的指定其运行于哪一种Mode。
+在设置Run Loop Mode后，你的Run Loop会自动过滤和其他Mode相关的事件源，而只监视和当前设置Mode相关的源(通知相关的观察者)。
+大多数时候，Run Loop都是运行在系统定义的默认模式上。
+
+Cocoa和Core Foundataion为我们定义了默认的和常用的Mode。
+Run Loop Mode的名称可以使用字符串来标识，我们也可以使用字符串指定一个Mode名称来自定义Mode。
+
+Input Sources
+Input source有两个不同的种类: Port-Based Sources 和 Custom Input Sources。Run Loop本身并不关心Input source是哪一种类型。
+系统会实现两种不同的Input source供我们使用。
+这两种不同类型的Input source的区别在于：Port-Based Sources由内核自动发送，Custom Input Sources需要从其他线程手动发送。
+
+
+
 
